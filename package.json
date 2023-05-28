@@ -11,7 +11,7 @@
     "client": "npm run dev --prefix frontend",
     "both": "concurrently \"npm run server\" \"npm run client\"",
     "install-server": "cd backend && npm install",
-    "start-server": "cd backend && node server.js",
+    "start-server": "node backend/server.js",
     "install-client": "cd frontend && npm install",
     "build-client": "cd frontend && npm run build",
     "start-client": "cd frontend && npm run start",
