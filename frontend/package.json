@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "homepage": "https://mern-crash.vercel.app/",
   "private": true,
   "version": "0.0.0",
   "type": "module",

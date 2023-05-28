@@ -10,7 +10,11 @@
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix frontend",
     "both": "concurrently \"npm run server\" \"npm run client\"",
-    "deploy": ""
+    "install-server": "cd backend && npm install",
+    "start-server": "cd backend && node server.js",
+    "install-client": "cd frontend && npm install",
+    "build-client": "cd frontend && npm run build",
+    "start-client": "cd frontend && npm run start"
 
   },
   "keywords": [],
