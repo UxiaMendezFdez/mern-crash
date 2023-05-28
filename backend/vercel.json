@@ -1,20 +1,11 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "./backend/server.js",  
-        "use": "@vercel/node"
-      },
-      {
-        "src": "./frontend/dist",    
-        "use": "@vercel/static"
-      }
-    ],
-  
+    "buildCommand": "cd frontent && npm install && npm run build",
+    "outputDirectory": "frontend/dist",
+    "framework": "vite",
     "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/backend/server.js"
-      }
+        {
+            "source": "/backend/(.*)",
+            "destination": "/backend/server.js"
+        }
     ]
-  }
+}
