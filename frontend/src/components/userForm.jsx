@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BsFillEyeFill, BsEyeSlashFill } from "react-icons/bs";
 
-const UserForm = ({ type, handleSubmit }) => {
+const UserForm = ({ type, handleSubmit, loading }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -12,9 +20,17 @@ const UserForm = ({ type, handleSubmit }) => {
   const [passHidden, setPassHidden] = useState(true);
   const [repeatPassHidden, setRepeatPassHidden] = useState(true);
 
+  const [validated, setValidated] = useState(false);
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    handleSubmit({ email, name, password });
+
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      setValidated(true);
+    } else {
+      handleSubmit({ email, name, password });
+    }
   };
 
   return (
@@ -27,7 +43,7 @@ const UserForm = ({ type, handleSubmit }) => {
             <h3 className="text-center">Register</h3>
           )}
 
-          <Form onSubmit={onSubmit}>
+          <Form noValidate onSubmit={onSubmit} validated={validated}>
             <Form.Group controlId="email" className="mt-3">
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -36,6 +52,9 @@ const UserForm = ({ type, handleSubmit }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               ></Form.Control>
+              <Form.Control.Feedback type="invalid">
+                Required
+              </Form.Control.Feedback>
             </Form.Group>
             {type === "register" ? (
               <Form.Group controlId="name" className="mt-3">
@@ -44,7 +63,11 @@ const UserForm = ({ type, handleSubmit }) => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 ></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  Required
+                </Form.Control.Feedback>
               </Form.Group>
             ) : null}
 
@@ -64,6 +87,9 @@ const UserForm = ({ type, handleSubmit }) => {
                 >
                   {passHidden ? <BsFillEyeFill /> : <BsEyeSlashFill />}
                 </Button>
+                <Form.Control.Feedback type="invalid">
+                  Required
+                </Form.Control.Feedback>
               </InputGroup>
             </div>
 
@@ -86,11 +112,19 @@ const UserForm = ({ type, handleSubmit }) => {
                   >
                     {repeatPassHidden ? <BsFillEyeFill /> : <BsEyeSlashFill />}
                   </Button>
+                  <Form.Control.Feedback type="invalid">
+                    Required
+                  </Form.Control.Feedback>
                 </InputGroup>
               </div>
             ) : null}
-            <Button type="submit" variant="dark" className="mt-3 w-100">
-              Submit
+            <Button
+              type="submit"
+              variant="dark"
+              className="mt-3 w-100"
+              disabled={loading}
+            >
+              Submit {loading && <Spinner size="sm" className="ml-2" />}
             </Button>
           </Form>
         </Col>

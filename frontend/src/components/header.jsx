@@ -6,6 +6,7 @@ import { useLogoutMutation } from "../slices/usersApiSlice";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,31 +30,34 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar bg="dark" variant="dark">
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>Posts App</Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse>
             <Nav className="ms-auto">
               {user ? (
-                <Nav.Link onClick={handleLogout}>
-                  <FaSignInAlt /> Log Out
-                </Nav.Link>
+                <NavDropdown
+                  title={
+                    <>
+                      <FaUser className="nav-user-icon" />
+                      {user?.name}
+                    </>
+                  }
+                  id="basic-nav-dropdown"
+                >
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={handleLogout}>
+                    Log Out
+                  </NavDropdown.Item>
+                </NavDropdown>
               ) : (
-                <>
-                  <LinkContainer to="/login">
-                    <Nav.Link>
-                      <FaSignInAlt /> Sign In
-                    </Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/register">
-                    <Nav.Link>
-                      <FaSignInAlt /> Sign Up
-                    </Nav.Link>
-                  </LinkContainer>
-                </>
+                <LinkContainer to="/login">
+                  <Nav.Link>Log In</Nav.Link>
+                </LinkContainer>
               )}
             </Nav>
           </Navbar.Collapse>

@@ -56,6 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //POST /api/logout
 const logoutUser = asyncHandler(async (req, res) => {
+  console.log("clearing cookie....");
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
@@ -65,14 +66,18 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 //GET /api/profile
 const getProfile = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    id: req.user._id,
-    name: req.user.name,
-    email: req.user.email,
-    posts: req.user.posts,
-  });
-
-  res.status(200).json({ message: "Update User Profile" });
+  const user = await User.findById(req.user._id);
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      posts: user.posts,
+    });
+  } else {
+    res.status(404);
+    throw new Error(messages.USER_NOT_FOUND);
+  }
 });
 
 //PUT /api/profile
@@ -98,8 +103,6 @@ const updateProfile = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error(messages.USER_NOT_FOUND);
   }
-
-  res.status(200).json({ message: "Update User Profile" });
 });
 
 export { loginUser, registerUser, logoutUser, getProfile, updateProfile };

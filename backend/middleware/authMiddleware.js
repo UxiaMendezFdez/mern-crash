@@ -1,9 +1,11 @@
 import asyncHandler from "express-async-handler";
 import messages from "../utils/messages.js";
 import jwt from "jsonwebtoken";
+import User from "../models/user.js";
 
 const verifyToken = asyncHandler(async (req, res, next) => {
   let token = req.cookies.jwt;
+  console.log("token", token);
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);

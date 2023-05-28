@@ -24,7 +24,6 @@ const Login = () => {
   const handleSubmit = async (form) => {
     try {
       const res = await login(form).unwrap();
-      console.log(res);
       dispatch(setUser({ ...res }));
       navigate("/");
       toast.success(`Welcome back ${res.name}!`, { hideProgressBar: true });
@@ -32,7 +31,13 @@ const Login = () => {
       toast.error(err?.data?.message || err.error);
     }
   };
-  return <UserForm type="login" handleSubmit={handleSubmit}></UserForm>;
+  return (
+    <UserForm
+      type="login"
+      handleSubmit={handleSubmit}
+      loading={isLoading}
+    ></UserForm>
+  );
 };
 
 export default Login;
